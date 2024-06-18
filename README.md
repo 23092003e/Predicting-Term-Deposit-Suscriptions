@@ -6,8 +6,11 @@ This project focused on analyzing a dataset related to a bank's term deposit mar
 
 ## **Approach**
 **Data Collection and Preprocessing:** Loaded the data, checked and handled missing values, removed duplicates.
+
 **Data Exploration:** Performed statistical analysis and exploration of the data features, including distribution, correlations, etc.
+
 **Data Preprocessing:** Encoded categorical features, normalized numeric features.
+
 **Model Building:** Selected appropriate machine learning techniques, trained and evaluated the model performance.
 
 ## **Results**
