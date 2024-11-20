@@ -4,3 +4,6 @@ Predicting term deposit subscriptions is a common classification problem in the 
 # Algorithms
 ### Naive Bayes
 ### J48 Decision Tree
+
+
+# Evaluation
