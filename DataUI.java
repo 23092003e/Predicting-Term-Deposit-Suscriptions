@@ -1,41 +1,49 @@
 import src.LoadData;
+import src.SaveData;
 import src.J48DecisionTree;
 import src.J48DecisionTreeEva;
+import src.J48TreeVisualizer;
 import src.RandomForestClassifier;
 import src.RandomForestEva;
 import src.NaiveBayess;
 import src.NaiveBayesEva;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 public class DataUI extends JFrame {
     private JTextArea textArea;
     private LoadData loadData;
     private J48DecisionTree j48DecisionTree;
     private J48DecisionTreeEva j48DecisionTreeEva;
+    private J48TreeVisualizer j48TreeVisualizer;
     private RandomForestClassifier randomForestClassifier;
     private RandomForestEva randomForestEva;
     private NaiveBayess naiveBayess;
     private NaiveBayesEva naiveBayesEva;
+    private SaveData saveData;
 
     public DataUI() {
         loadData = new LoadData();
         j48DecisionTree = new J48DecisionTree();
         j48DecisionTreeEva = new J48DecisionTreeEva();
+        j48TreeVisualizer = new J48TreeVisualizer();
         randomForestClassifier = new RandomForestClassifier();
         randomForestEva = new RandomForestEva();
         naiveBayess = new NaiveBayess();
         naiveBayesEva = new NaiveBayesEva();
+        saveData = new SaveData();
 
         initUI();
     }
 
     private void initUI() {
         setTitle("Data Loader and Classifiers");
-        setSize(1000, 800);
+        setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -55,6 +63,7 @@ public class DataUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     loadData.loadData("lib/newdata.arff"); // Adjust the path to your ARFF file
+                    saveData.setNewData(loadData.getNewData()); // Set the loaded data into saveData
                     textArea.append("Data loaded and converted successfully!\n");
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -62,6 +71,23 @@ public class DataUI extends JFrame {
                 }
             }
         });
+
+        // Create a button to save data
+        JButton saveButton = new JButton("Save Data");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String outputFilePath = "lib/transferedData.arff"; 
+                    // Adjust the path to your output ARFF file 
+                    saveData.saveData(outputFilePath); 
+                    textArea.append("Data saved successfully!\n"); 
+                } catch (Exception ex) { 
+                    ex.printStackTrace(); 
+                    textArea.append("Error saving data!\n");
+                }
+            }
+        });        
 
         // Create a button to run the J48 decision tree
         JButton runJ48Button = new JButton("Run J48 Decision Tree");
@@ -97,6 +123,21 @@ public class DataUI extends JFrame {
                     }
                 } else {
                     textArea.append("Please load the data first and run J48 Decision Tree Model! \n");
+                }
+            }
+        });
+
+        // Create a button to visualize J48 tree
+        JButton J48visualizeButton = new JButton("Visualize J48");
+        J48visualizeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    j48TreeVisualizer.run(loadData.getNewData()); // Visualize the J48 tree
+                    textArea.append("J48 Tree visualized successfully!\n");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    textArea.append("Error visualizing J48 tree!\n");
                 }
             }
         });
@@ -180,9 +221,11 @@ public class DataUI extends JFrame {
         // Add buttons to the panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(loadButton);
+        buttonPanel.add(saveButton);
         buttonPanel.add(runNBButton); //This one for Naive Bayes model
         buttonPanel.add(runNBEvaButton); //This one for Naive Bayes model
         buttonPanel.add(runJ48Button); //This one for Decision Tree (J48) model
+        buttonPanel.add(J48visualizeButton); //This one for visualizing J48 tree
         buttonPanel.add(runJ48EvaButton); //This one for Decision Tree (J48) evaluation
         buttonPanel.add(runRFButton); //This one for Random forest model
         buttonPanel.add(runRFEvaButton); //This one for Random forest model
