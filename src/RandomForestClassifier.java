@@ -4,7 +4,6 @@ import weka.classifiers.trees.RandomForest;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 
-import java.util.Random;
 
 public class RandomForestClassifier {
 
